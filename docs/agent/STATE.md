@@ -11,8 +11,10 @@ Runtime target:
 - Telegram topic: `listmonk #30346`
 
 Current status:
-- Cloudflare container scaffolding is present.
-- Deployment requires a durable PostgreSQL database and Worker secrets before listmonk can serve real traffic.
+- Cloudflare Worker and Cloudflare Container application are deployed.
+- Worker version verified on 2026-08-17: `9b1c0376-0efe-4478-8a6a-efdcb9f1e78f`.
+- Container application verified ready on 2026-08-17: `listmonk-inglesconliza-listmonkcontainer`, application id `a03198a5-6f4e-4cfd-bfb9-bbdcf2c901df`.
+- Runtime requires a durable PostgreSQL database and Worker secrets before listmonk can serve real traffic.
 - The Worker `/health` route is available independently of the container and reports deployment metadata plus missing setup.
 
 Required secrets:
