@@ -1,0 +1,45 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "listmonk-inglesconliza",
+  "main": "src/worker.ts",
+  "compatibility_date": "2026-08-17",
+  "routes": [
+    {
+      "pattern": "listmonk.inglesconliza.com/*",
+      "zone_name": "inglesconliza.com"
+    }
+  ],
+  "containers": [
+    {
+      "class_name": "ListmonkContainer",
+      "image": "./Dockerfile.cloudflare",
+      "instance_type": "standard-1",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "LISTMONK_CONTAINER",
+        "class_name": "ListmonkContainer"
+      }
+    ]
+  },
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["ListmonkContainer"]
+    }
+  ],
+  "vars": {
+    "DEPLOY_BRANCH": "local",
+    "DEPLOY_COMMIT_HASH": "unknown",
+    "DEPLOYED_AT": "unknown",
+    "LISTMONK_PUBLIC_URL": "https://listmonk.inglesconliza.com",
+    "LISTMONK_DB_PORT": "5432",
+    "LISTMONK_DB_SSL_MODE": "require"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

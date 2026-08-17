@@ -1,0 +1,9 @@
+FROM listmonk/listmonk:latest
+
+COPY scripts/cloudflare-listmonk-entrypoint.sh /usr/local/bin/cloudflare-listmonk-entrypoint.sh
+
+RUN chmod +x /usr/local/bin/cloudflare-listmonk-entrypoint.sh
+
+EXPOSE 9000
+
+ENTRYPOINT ["/usr/local/bin/cloudflare-listmonk-entrypoint.sh"]
