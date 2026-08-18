@@ -12,6 +12,12 @@ npm install
 npm run deploy:dry-run
 ```
 
+For the D1/KV/R2 port planning track, also audit Postgres-specific usage before implementation:
+
+```bash
+rg -n "postgres|PostgreSQL|pq|pgx|database/sql|sqlx|JSONB|TO_TSVECTOR|TO_TSQUERY|ILIKE|ANY\\(|RETURNING|pg_" go.mod cmd internal models queries schema.sql
+```
+
 ## Configure Secrets
 
 Set these after provisioning a durable PostgreSQL database:
@@ -40,6 +46,10 @@ The deploy script injects:
 - `DEPLOY_BRANCH`
 - `DEPLOY_COMMIT_HASH`
 - `DEPLOYED_AT`
+
+## D1/KV/R2 Port
+
+The D1/KV/R2 deployment is not ready for `npm run deploy` until the plan in `docs/agent/D1_KV_DEPLOYMENT_PLAN.md` has passed its feasibility spike. Do not remove the current Postgres-backed path until the D1-backed auth, list, subscriber, campaign, tracking, and media flows pass against remote Cloudflare resources.
 
 ## Verify
 

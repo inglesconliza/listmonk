@@ -1,6 +1,6 @@
 # State
 
-Last updated: 2026-08-17
+Last updated: 2026-08-18
 
 This repository is the InglesConLiza fork of `knadh/listmonk`.
 
@@ -16,6 +16,8 @@ Current status:
 - Container application verified ready on 2026-08-17: `listmonk-inglesconliza-listmonkcontainer`, application id `a03198a5-6f4e-4cfd-bfb9-bbdcf2c901df`.
 - Runtime requires a durable PostgreSQL database and Worker secrets before listmonk can serve real traffic.
 - The Worker `/health` route is available independently of the container and reports deployment metadata plus missing setup.
+- Active planning track: evaluate and implement a D1/KV/R2 storage port for Cloudflare-native persistence. See `docs/agent/D1_KV_DEPLOYMENT_PLAN.md`.
+- Current code is not D1-ready. The app uses Postgres-specific drivers, schema, sessions, migrations, arrays, JSONB, full-text search, and query syntax.
 
 Required secrets:
 - `LISTMONK_DB_HOST`
