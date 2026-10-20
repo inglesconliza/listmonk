@@ -3,6 +3,7 @@
   "scripts": {
     "deploy": "node scripts/deploy-cloudflare.mjs",
     "deploy:dry-run": "node scripts/deploy-cloudflare.mjs --dry-run",
+    "test:readiness": "node --experimental-strip-types --test test/readiness.test.ts",
     "types": "wrangler types"
   },
   "devDependencies": {
