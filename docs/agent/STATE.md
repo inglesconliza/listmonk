@@ -1,5 +1,7 @@
 # State
 
+- 2026-10-20: [repo improvement plan](IMPROVEMENT_PLAN_2026-10-20.md) defines offline readiness work first; activation and database/storage migration remain deferred pending their explicit decision.
+
 Last updated: 2026-08-18
 
 This repository is the InglesConLiza fork of `knadh/listmonk`.
