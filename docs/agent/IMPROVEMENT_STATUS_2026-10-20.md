@@ -8,6 +8,20 @@ Status: complete on the nondeploying branch
 Implementation commit: `3c3ea8ec5200b3f1008225f18c71d15de3919f41`
 (`test: cover listmonk readiness contract`).
 
+### Checkpoint 38 correction
+
+Status: complete on the same nondeploying branch, not deployed.
+
+Correction commit: `e8d85f558ca3b52e115161e7675b17c7870d23d5`
+(`fix: handle async listmonk adapter failures`).
+
+The prior source returned the promise from `container.fetch()` without awaiting it
+inside the `try` boundary. An asynchronous fetch rejection therefore escaped the
+controlled 503 response. The correction awaits that promise within the boundary.
+The regression suite separately verifies startup rejection, asynchronous fetch
+rejection, successful fetch, missing-configuration no-start behavior, and health
+metadata.
+
 ## Delivered scope
 
 - Extracted the Worker readiness and adapter boundary into a testable module.
@@ -28,6 +42,9 @@ Implementation commit: `3c3ea8ec5200b3f1008225f18c71d15de3919f41`
 - The repository `npm run types` script could not run in this checkout because
   the local Wrangler executable is absent. No dependency installation, deploy,
   dry run, database access, container start, or provider call was performed.
+- Checkpoint 38: `npm run test:readiness` passed, 5 of 5 offline tests;
+  `npx wrangler types` passed; and `git diff --check` passed before the
+  correction commit. The generated type file was discarded.
 
 ## Source and live evidence
 
@@ -40,6 +57,13 @@ Implementation commit: `3c3ea8ec5200b3f1008225f18c71d15de3919f41`
 - Live deployment metadata was `branch: "master"`,
   `commitHash: "8d43259cacb1507f5045c94e4c46447caca53c8a"`, and
   `deployedAt: "2026-08-17T20:20:44.383Z"`. It does not include this package.
+- Checkpoint 38 source evidence: commit `3c3ea8ec5200b3f1008225f18c71d15de3919f41`
+  contained the un-awaited fetch return; correction commit
+  `e8d85f558ca3b52e115161e7675b17c7870d23d5` contains the awaited boundary.
+  This was reproduced and verified only with offline stubs.
+- Checkpoint 38 live evidence: no public endpoint was called and no deployment
+  occurred. The preceding live evidence remains historical evidence of the
+  deferred `8d43259...` deployment only, not evidence for either source commit.
 
 ## Blockers and next package
 
