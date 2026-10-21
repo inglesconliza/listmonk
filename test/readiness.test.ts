@@ -80,7 +80,7 @@ test("health records deployment metadata and readiness state with missing config
   assert.equal(calls.start, 0);
 });
 
-test("configured adapter errors return a controlled 503 without leaking the error", async () => {
+test("configured adapter startup failure returns a controlled 503 without leaking the error", async () => {
   const { calls, container, env } = fixture({
     LISTMONK_DB_HOST: "db.example.test",
     LISTMONK_DB_USER: "listmonk",
@@ -104,6 +104,33 @@ test("configured adapter errors return a controlled 503 without leaking the erro
   });
   assert.equal(calls.start, 1);
   assert.equal(calls.fetch, 0);
+});
+
+test("configured adapter asynchronous fetch rejection returns a controlled 503", async () => {
+  const { calls, container, env } = fixture({
+    LISTMONK_DB_HOST: "db.example.test",
+    LISTMONK_DB_USER: "listmonk",
+    LISTMONK_DB_PASSWORD: "not-a-secret",
+    LISTMONK_DB_DATABASE: "listmonk"
+  });
+  container.fetch = async () => {
+    calls.fetch += 1;
+    await Promise.resolve();
+    throw new Error("provider-specific fetch failure");
+  };
+
+  const response = await handleListmonkRequest(new Request("https://example.test/"), env);
+
+  assert.equal(response.status, 503);
+  assert.deepEqual(await response.json(), {
+    service: "listmonk-inglesconliza",
+    status: "adapter_unavailable",
+    branch: "improvement/listmonk-01-readiness",
+    commitHash: "fixture-commit",
+    deployedAt: "2026-10-20T00:00:00.000Z"
+  });
+  assert.equal(calls.start, 1);
+  assert.equal(calls.fetch, 1);
 });
 
 test("configured adapter receives the database environment and returns its response", async () => {

@@ -54,7 +54,7 @@ export async function handleListmonkRequest(request: Request, env: ListmonkEnv):
       }
     });
 
-    return container.fetch(request);
+    return await container.fetch(request);
   } catch {
     return json(
       {
